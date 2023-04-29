@@ -1,12 +1,15 @@
 use crate::state::voter_poll_data_info;
 use crate::state::voter_poll_data_info::*;
 use crate::state::poll_info::*;
+use crate::state::error_code::*;
 use anchor_lang::prelude::*;
 
 pub fn create_poll(ctx: Context<CreatePoll>, voting_deadline: u32) -> Result<()> {
     let voter_poll_data_account = &mut ctx.accounts.voter_poll_data_account;
     let poll_account = &mut ctx.accounts.poll_account;
-    poll_account.create(voter_poll_data_account.poll_id, voting_deadline);
+    let user = &ctx.accounts.user;
+    let bump = *ctx.bumps.get("poll_account").ok_or(ErrorsCode::CannotGetBump)?;
+    poll_account.create(voter_poll_data_account.poll_id, voting_deadline, user.key(), bump);
     Ok(())
 }
 

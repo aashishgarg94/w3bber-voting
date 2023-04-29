@@ -15,17 +15,20 @@ pub struct PollInfo {
     pub status: PollStatus, // 2
     pub voting_deadline: u32, // 4
     pub result: Option<u8>, // 1
+    pub user: Pubkey, // 32
     pub bump: u8 // 1
 }
 
 impl PollInfo{
-    pub const MAXIMUM_SIZE: usize = 32 + 2 + 4 + 1 + 1;
+    pub const MAXIMUM_SIZE: usize = 32 + 2 + 4 + 1 + 32 + 1;
 
-    pub fn create(&mut self, poll_id: Pubkey, voting_deadline: u32) -> Result<()> {
+    pub fn create(&mut self, poll_id: Pubkey, voting_deadline: u32, user: Pubkey, bump: u8) -> Result<()> {
         self.poll_id = poll_id;
         self.status = PollStatus::Started;
         self.voting_deadline = voting_deadline;
         self.result = None;
+        self.user = user;
+        self.bump = bump;
         Ok(())
     }
 

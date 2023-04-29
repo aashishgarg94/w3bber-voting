@@ -9,7 +9,7 @@ pub fn cancel_poll(ctx: Context<CancelPoll>) -> Result<()> {
 
 #[derive(Accounts)]
 pub struct CancelPoll<'info>{
-    #[account(mut)]
+    #[account(mut, constraint = user.key == &poll_account.user)]
     pub poll_account: Account<'info, PollInfo>,
 
     #[account(mut)]

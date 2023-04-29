@@ -10,7 +10,7 @@ pub fn update_vote(ctx: Context<UpdateVote>, vote: String, tokens_staked: u32) -
 
 #[derive(Accounts)]
 pub struct UpdateVote<'info>{
-    #[account(mut)]
+    #[account(mut, constraint = user.key == &vote_account.voter_id, seeds = [vote_account.voter_id.as_ref(), vote_account.poll_id.as_ref()], bump = vote_account.bump)]
     pub vote_account: Account<'info, IndividualVote>,
 
     #[account(mut)]

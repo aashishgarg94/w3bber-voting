@@ -9,7 +9,7 @@ pub fn reveal_poll(ctx: Context<RevealPoll>, result: u8) -> Result<()> {
 
 #[derive(Accounts)]
 pub struct RevealPoll<'info>{
-    #[account(mut)]
+    #[account(mut, constraint = user.key == &poll_account.user, seeds = [poll_account.poll_id.as_ref()], bump = poll_account.bump)]
     pub poll_account: Account<'info, PollInfo>,
 
     #[account(mut)]

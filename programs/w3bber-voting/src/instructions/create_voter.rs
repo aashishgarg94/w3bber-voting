@@ -1,11 +1,13 @@
 use crate::state::voter_poll_data_info::*;
 use crate::state::voter_info::*;
+use crate::state::error_code::*;
 use anchor_lang::prelude::*;
 
 pub fn create_voter(ctx: Context<CreateVoter>) -> Result<()> {
     let voter_poll_data_account = &mut ctx.accounts.voter_poll_data_account;
     let voter_info = &mut ctx.accounts.voter_account;
-    voter_info.create(voter_poll_data_account.voter_id);
+    let bump = *ctx.bumps.get("voter_account").ok_or(ErrorsCode::CannotGetBump)?;
+    voter_info.create(voter_poll_data_account.voter_id, bump);
     Ok(())
 }
 
