@@ -1,0 +1,9 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "./programs/w3bber-voting/Cargo.toml",
+        "./programs/w3bber-voting/Cargo.toml",
+        "./programs/w3bber-voting/Cargo.toml",
+        "./programs/w3bber-voting/Cargo.toml"
+    ],
+    "rust-analyzer.showUnlinkedFileNotification": false
+}
