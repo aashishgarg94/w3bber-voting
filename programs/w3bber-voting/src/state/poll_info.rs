@@ -1,4 +1,5 @@
 use anchor_lang::prelude::*;
+use crate::state::error_code::*;
 use num_derive::*;
 use num_traits::*;
 
@@ -33,12 +34,21 @@ impl PollInfo{
     }
 
     pub fn reveal(&mut self, result: u8) -> Result<()> {
+        if self.status == PollStatus::Finished {
+            return Err(ErrorsCode::PollAlreadyFinished.into());
+        }
+        if self.status == PollStatus::Cancelled {
+            return Err(ErrorsCode::PollAlreadyCancelled.into());
+        }
         self.status = PollStatus::Finished;
         self.result = Some(result);
         Ok(())
     }
 
     pub fn cancel(&mut self) -> Result<()> {
+        if self.status == PollStatus::Cancelled {
+            return Err(ErrorsCode::PollAlreadyCancelled.into());
+        }
         self.status = PollStatus::Cancelled;
         self.result = None;
         Ok(())

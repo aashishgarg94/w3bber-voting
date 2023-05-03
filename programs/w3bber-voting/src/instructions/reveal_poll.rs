@@ -1,10 +1,13 @@
 use crate::state::poll_info::*;
+use crate::state::error_code::*;
 use anchor_lang::prelude::*;
 
 pub fn reveal_poll(ctx: Context<RevealPoll>, result: u8) -> Result<()> {
     let poll_account = &mut ctx.accounts.poll_account;
-    poll_account.reveal(result);
-    Ok(())
+    match poll_account.reveal(result) {
+        Ok(_) => Ok(()),
+        Err(e) => return Err(e)
+    }
 }
 
 #[derive(Accounts)]

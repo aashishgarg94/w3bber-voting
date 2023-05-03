@@ -10,12 +10,12 @@ declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 pub mod voting {
     use super::*;
 
-    pub fn create_voter_poll_data(ctx: Context<CreateVoterPollData>, voter_id: Pubkey , poll_id: Pubkey) -> Result<()> {
-        instructions::create_voter_poll_data::create_voter_poll_data(ctx, voter_id, poll_id)
+    pub fn create_poll_data(ctx: Context<CreatePollData>, poll_id: Pubkey) -> Result<()> {
+        instructions::create_poll_data::create_poll_data(ctx, poll_id)
     }
 
-    pub fn update_voter_poll_data(ctx: Context<UpdateVoterPollData>, voter_id: Pubkey , poll_id: Pubkey) -> Result<()> {
-        instructions::update_voter_poll_data::update_voter_poll_data(ctx, voter_id, poll_id)
+    pub fn update_poll_data(ctx: Context<UpdatePollData>, poll_id: Pubkey) -> Result<()> {
+        instructions::update_poll_data::update_poll_data(ctx, poll_id)
     }
 
     pub fn create_voter(ctx: Context<CreateVoter>) -> Result<()> {

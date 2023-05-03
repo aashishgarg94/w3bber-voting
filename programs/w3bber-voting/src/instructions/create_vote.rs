@@ -9,13 +9,15 @@ pub fn create_vote(ctx: Context<CreateVote>, vote: String, tokens_staked: u32) -
     let voter_account = &ctx.accounts.voter_account;
     let vote_account = &mut ctx.accounts.vote_account;
     let bump = *ctx.bumps.get("vote_account").ok_or(ErrorsCode::CannotGetBump)?;
-    vote_account.create(poll_account.poll_id, voter_account.voter_id, vote, tokens_staked, bump);
-    Ok(())
+    match vote_account.create(poll_account.poll_id, voter_account.voter_id, vote, tokens_staked, bump) {
+        Ok(_) => Ok(()),
+        Err(e) => return Err(e)
+    }
 }
 
 #[derive(Accounts)]
 pub struct CreateVote<'info>{
-    #[account(mut, seeds = [voter_account.voter_id.as_ref()], bump = voter_account.bump)]
+    #[account(mut, seeds = [b"voter".as_ref(), voter_account.voter_id.as_ref()], bump = voter_account.bump)]
     pub voter_account: Account<'info, VoterInfo>,
 
     #[account(mut, seeds = [poll_account.poll_id.as_ref()], bump = poll_account.bump)]

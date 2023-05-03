@@ -1,10 +1,13 @@
 use crate::state::poll_info::*;
+use crate::state::error_code::*;
 use anchor_lang::prelude::*;
 
 pub fn cancel_poll(ctx: Context<CancelPoll>) -> Result<()> {
     let poll_account = &mut ctx.accounts.poll_account;
-    poll_account.cancel();
-    Ok(())
+    match poll_account.cancel() {
+        Ok(_) => Ok(()),
+        Err(e) => return Err(e)
+    }
 }
 
 #[derive(Accounts)]
