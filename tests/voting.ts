@@ -37,353 +37,353 @@ describe("w3bber-voting", () => {
   const customProvider = new anchor.AnchorProvider(provider.connection, customWallet, provider.opts);
   const program_2 = new anchor.Program(program.idl, program.programId, customProvider);
 
-//   it("Poll Data", async () => {
-//     const pollDataKeypair = anchor.web3.Keypair.generate();
-//     const kp = JSON.stringify(pollDataKeypair)
-//     const stored_kp = JSON.parse(kp)
-//     const arr = Object.values(stored_kp["_keypair"]["secretKey"])
-//     const secret = new Uint8Array(arr)
-//     const pair = web3.Keypair.fromSecretKey(secret)
+  it("Poll Data", async () => {
+    const pollDataKeypair = anchor.web3.Keypair.generate();
+    const kp = JSON.stringify(pollDataKeypair)
+    const stored_kp = JSON.parse(kp)
+    const arr = Object.values(stored_kp["_keypair"]["secretKey"])
+    const secret = new Uint8Array(arr)
+    const pair = web3.Keypair.fromSecretKey(secret)
 
-//     const random_poll = anchor.web3.Keypair.generate();
-//     const new_poll = anchor.web3.Keypair.generate();
+    const random_poll = anchor.web3.Keypair.generate();
+    const new_poll = anchor.web3.Keypair.generate();
     
-//     const user = (program.provider as anchor.AnchorProvider).wallet;
+    const user = (program.provider as anchor.AnchorProvider).wallet;
     
-//     //// Create Poll data
-//     await program.methods
-//       .createPollData(random_poll.publicKey)
-//       .accounts({
-//         pollDataAccount: pollDataKeypair.publicKey,
-//         user: user.publicKey,
-//       })
-//       .signers([pollDataKeypair])
-//       .rpc()
+    //// Create Poll data
+    await program.methods
+      .createPollData(random_poll.publicKey)
+      .accounts({
+        pollDataAccount: pollDataKeypair.publicKey,
+        user: user.publicKey,
+      })
+      .signers([pollDataKeypair])
+      .rpc()
 
-//     // Check contents of Poll Data
-//     let poll_data_info = await program.account.pollDataInfo.fetch(pollDataKeypair.publicKey);
-//     expect(poll_data_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
+    // Check contents of Poll Data
+    let poll_data_info = await program.account.pollDataInfo.fetch(pollDataKeypair.publicKey);
+    expect(poll_data_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
 
-//     // Try to reinitialize in the wrong way
-//     try{
-//         await program.methods
-//         .createPollData(new_poll.publicKey)
-//         .accounts({
-//             pollDataAccount: pollDataKeypair.publicKey,
-//             user: user.publicKey,
-//         })
-//         .signers([pollDataKeypair])
-//         .rpc();
+    // Try to reinitialize in the wrong way
+    try{
+        await program.methods
+        .createPollData(new_poll.publicKey)
+        .accounts({
+            pollDataAccount: pollDataKeypair.publicKey,
+            user: user.publicKey,
+        })
+        .signers([pollDataKeypair])
+        .rpc();
         
-//         chai.assert(false, "Expected an error here!");
-//     }catch(e) {
-//         const errMsg = "An Error Occured";
-//         chai.assert(true, e.toString());
-//     }
+        chai.assert(false, "Expected an error here!");
+    }catch(e) {
+        const errMsg = "An Error Occured";
+        chai.assert(true, e.toString());
+    }
     
-//     //// Update in the right manner
-//     await program.methods
-//         .updatePollData(new_poll.publicKey)
-//         .accounts({
-//           pollDataAccount: pollDataKeypair.publicKey,
-//           user: user.publicKey,
-//         })
-//         .signers([]) // Don't need to sign when we're not creating the account
-//         .rpc();
+    //// Update in the right manner
+    await program.methods
+        .updatePollData(new_poll.publicKey)
+        .accounts({
+          pollDataAccount: pollDataKeypair.publicKey,
+          user: user.publicKey,
+        })
+        .signers([]) // Don't need to sign when we're not creating the account
+        .rpc();
 
-//     let poll_data_info_2 = await program.account.pollDataInfo.fetch(pollDataKeypair.publicKey);
-//     expect(poll_data_info_2.pollId.toString()).to.equal(new_poll.publicKey.toString());
-//   })
+    let poll_data_info_2 = await program.account.pollDataInfo.fetch(pollDataKeypair.publicKey);
+    expect(poll_data_info_2.pollId.toString()).to.equal(new_poll.publicKey.toString());
+  })
 
-//   it("Poll Data Different User", async () => {
-//     const pollDataKeypair = anchor.web3.Keypair.generate();
-//     const pollDataKeypair2 = anchor.web3.Keypair.generate();
-//     const kp = JSON.stringify(pollDataKeypair)
-//     const stored_kp = JSON.parse(kp)
-//     const arr = Object.values(stored_kp["_keypair"]["secretKey"])
+  it("Poll Data Different User", async () => {
+    const pollDataKeypair = anchor.web3.Keypair.generate();
+    const pollDataKeypair2 = anchor.web3.Keypair.generate();
+    const kp = JSON.stringify(pollDataKeypair)
+    const stored_kp = JSON.parse(kp)
+    const arr = Object.values(stored_kp["_keypair"]["secretKey"])
 
 
-//     const random_poll = anchor.web3.Keypair.generate();
-//     const new_poll = anchor.web3.Keypair.generate();
+    const random_poll = anchor.web3.Keypair.generate();
+    const new_poll = anchor.web3.Keypair.generate();
     
-//     const user = (program.provider as anchor.AnchorProvider).wallet;
+    const user = (program.provider as anchor.AnchorProvider).wallet;
 
-//     //// Create Poll data
-//     await program.methods
-//       .createPollData(random_poll.publicKey)
-//       .accounts({
-//         pollDataAccount: pollDataKeypair.publicKey,
-//         user: user.publicKey,
-//       })
-//       .signers([pollDataKeypair])
-//       .rpc()
+    //// Create Poll data
+    await program.methods
+      .createPollData(random_poll.publicKey)
+      .accounts({
+        pollDataAccount: pollDataKeypair.publicKey,
+        user: user.publicKey,
+      })
+      .signers([pollDataKeypair])
+      .rpc()
 
-//     // Check contents of Poll Data
-//     let poll_data_info = await program.account.pollDataInfo.fetch(pollDataKeypair.publicKey);
-//     expect(poll_data_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
+    // Check contents of Poll Data
+    let poll_data_info = await program.account.pollDataInfo.fetch(pollDataKeypair.publicKey);
+    expect(poll_data_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
 
-//     // Try to create with a different wallet
-//     const txHash = await provider.connection.requestAirdrop(
-//         wallet_pair.publicKey,
-//         1000 * LAMPORTS_PER_SOL
-//     );
+    // Try to create with a different wallet
+    const txHash = await provider.connection.requestAirdrop(
+        wallet_pair.publicKey,
+        1000 * LAMPORTS_PER_SOL
+    );
 
-//     const blockhashInfo = await provider.connection.getLatestBlockhash();
-//     await provider.connection.confirmTransaction({
-//       blockhash: blockhashInfo.blockhash,
-//       lastValidBlockHeight: blockhashInfo.lastValidBlockHeight,
-//       signature: txHash,
-//     });
+    const blockhashInfo = await provider.connection.getLatestBlockhash();
+    await provider.connection.confirmTransaction({
+      blockhash: blockhashInfo.blockhash,
+      lastValidBlockHeight: blockhashInfo.lastValidBlockHeight,
+      signature: txHash,
+    });
 
-//         await program_2.methods
-//         .createPollData(new_poll.publicKey)
-//         .accounts({
-//             pollDataAccount: pollDataKeypair2.publicKey,
-//             user: wallet_pair.publicKey,
-//         })
-//         .signers([pollDataKeypair2])
-//         .rpc();
+        await program_2.methods
+        .createPollData(new_poll.publicKey)
+        .accounts({
+            pollDataAccount: pollDataKeypair2.publicKey,
+            user: wallet_pair.publicKey,
+        })
+        .signers([pollDataKeypair2])
+        .rpc();
 
-//         let poll_data_info_2 = await program.account.pollDataInfo.fetch(pollDataKeypair2.publicKey);
-//         expect(poll_data_info_2.pollId.toString()).to.equal(new_poll.publicKey.toString());
+        let poll_data_info_2 = await program.account.pollDataInfo.fetch(pollDataKeypair2.publicKey);
+        expect(poll_data_info_2.pollId.toString()).to.equal(new_poll.publicKey.toString());
 
-//     // Try to update with different pubkey
-//     try{
-//         await program.methods
-//         .updatePollData(new_poll.publicKey)
-//         .accounts({
-//             pollDataAccount: pollDataKeypair.publicKey,
-//             user: wallet_pair.publicKey,
-//         })
-//         .signers([])
-//         .rpc();
+    // Try to update with different pubkey
+    try{
+        await program.methods
+        .updatePollData(new_poll.publicKey)
+        .accounts({
+            pollDataAccount: pollDataKeypair.publicKey,
+            user: wallet_pair.publicKey,
+        })
+        .signers([])
+        .rpc();
         
-//         chai.assert(false, "Expected an error here!");
-//     }catch(e) {
-//         const errMsg = "An Error Occured";
-//         chai.assert(true, e.toString());
-//     }
-//   })
+        chai.assert(false, "Expected an error here!");
+    }catch(e) {
+        const errMsg = "An Error Occured";
+        chai.assert(true, e.toString());
+    }
+  })
 
-//   it("Poll Account", async () => {
-//     const pollDataKeypair = anchor.web3.Keypair.generate();
-//     const random_poll = anchor.web3.Keypair.generate();
-//     const new_poll = anchor.web3.Keypair.generate();
+  it("Poll Account", async () => {
+    const pollDataKeypair = anchor.web3.Keypair.generate();
+    const random_poll = anchor.web3.Keypair.generate();
+    const new_poll = anchor.web3.Keypair.generate();
 
-//     const currentTimestamp = Math.floor(Date.now() / 1000);
-//     const twoDaysInSeconds = 2 * 24 * 60 * 60;
-//     const timestampPlusTwoDays = currentTimestamp + twoDaysInSeconds;
-//     const timestampPlusTwoDaysAsI32 = timestampPlusTwoDays | 0;
-//     const started_keys = ["started"]
-//     const finished_keys = ["finished"]
-//     const cancelled_keys = ["cancelled"]
-//     const poll_result = 80
-//     const changed_poll_result = 81
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    const twoDaysInSeconds = 2 * 24 * 60 * 60;
+    const timestampPlusTwoDays = currentTimestamp + twoDaysInSeconds;
+    const timestampPlusTwoDaysAsI32 = timestampPlusTwoDays | 0;
+    const started_keys = ["started"]
+    const finished_keys = ["finished"]
+    const cancelled_keys = ["cancelled"]
+    const poll_result = 80
+    const changed_poll_result = 81
 
-//     const user = (program.provider as anchor.AnchorProvider).wallet;
+    const user = (program.provider as anchor.AnchorProvider).wallet;
     
-//     //// Create Poll data
-//     await program.methods
-//       .createPollData(random_poll.publicKey)
-//       .accounts({
-//         pollDataAccount: pollDataKeypair.publicKey,
-//         user: user.publicKey,
-//       })
-//       .signers([pollDataKeypair])
-//       .rpc()
+    //// Create Poll data
+    await program.methods
+      .createPollData(random_poll.publicKey)
+      .accounts({
+        pollDataAccount: pollDataKeypair.publicKey,
+        user: user.publicKey,
+      })
+      .signers([pollDataKeypair])
+      .rpc()
     
-//     let poll_data = await program.account.pollDataInfo.fetch(pollDataKeypair.publicKey);
+    let poll_data = await program.account.pollDataInfo.fetch(pollDataKeypair.publicKey);
 
-//     const [pollInfoPDA, _] = PublicKey.findProgramAddressSync(
-//       [
-//         poll_data.pollId.toBuffer()
-//       ],
-//       program.programId
-//     )
+    const [pollInfoPDA, _] = PublicKey.findProgramAddressSync(
+      [
+        poll_data.pollId.toBuffer()
+      ],
+      program.programId
+    )
     
-//     //// Create Poll Info
-//     await program.methods
-//       .createPoll(timestampPlusTwoDaysAsI32)
-//       .accounts({
-//         pollAccount: pollInfoPDA,
-//         pollDataAccount: pollDataKeypair.publicKey,
-//         user: user.publicKey,
-//       })
-//       .rpc()
+    //// Create Poll Info
+    await program.methods
+      .createPoll(timestampPlusTwoDaysAsI32)
+      .accounts({
+        pollAccount: pollInfoPDA,
+        pollDataAccount: pollDataKeypair.publicKey,
+        user: user.publicKey,
+      })
+      .rpc()
 
-//     //// Try to reinitialize in the wrong way
-//     try{
-//       await program.methods
-//       .createPoll(timestampPlusTwoDaysAsI32)
-//       .accounts({
-//         pollDataAccount: pollDataKeypair.publicKey,
-//         user: user.publicKey,
-//       })
-//       .rpc();
+    //// Try to reinitialize in the wrong way
+    try{
+      await program.methods
+      .createPoll(timestampPlusTwoDaysAsI32)
+      .accounts({
+        pollDataAccount: pollDataKeypair.publicKey,
+        user: user.publicKey,
+      })
+      .rpc();
       
-//       chai.assert(false, "Expected an error here!");
-//     }catch(e) {
-//         const errMsg = "An Error Occured";
-//         chai.assert(true, e.toString());
-//     }
+      chai.assert(false, "Expected an error here!");
+    }catch(e) {
+        const errMsg = "An Error Occured";
+        chai.assert(true, e.toString());
+    }
 
-//     // check content of poll_info
-//     let poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
-//     expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
-//     expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
-//     expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
-//     expect(Object.keys(poll_info.status) == started_keys);
-//     expect(poll_info.result == null)
+    // check content of poll_info
+    let poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
+    expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
+    expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
+    expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
+    expect(Object.keys(poll_info.status) == started_keys);
+    expect(poll_info.result == null)
 
-//     //// Reveal Poll By Non-Owner
-//     const txHash = await provider.connection.requestAirdrop(
-//         wallet_pair.publicKey,
-//         1000 * LAMPORTS_PER_SOL
-//     );
+    //// Reveal Poll By Non-Owner
+    const txHash = await provider.connection.requestAirdrop(
+        wallet_pair.publicKey,
+        1000 * LAMPORTS_PER_SOL
+    );
 
-//     const blockhashInfo = await provider.connection.getLatestBlockhash();
-//     await provider.connection.confirmTransaction({
-//       blockhash: blockhashInfo.blockhash,
-//       lastValidBlockHeight: blockhashInfo.lastValidBlockHeight,
-//       signature: txHash,
-//     });
+    const blockhashInfo = await provider.connection.getLatestBlockhash();
+    await provider.connection.confirmTransaction({
+      blockhash: blockhashInfo.blockhash,
+      lastValidBlockHeight: blockhashInfo.lastValidBlockHeight,
+      signature: txHash,
+    });
 
-//     try{
-//         await program_2.methods
-//         .revealPoll(poll_result)
-//         .accounts({
-//             pollAccount: pollInfoPDA,
-//             user: wallet_pair.publicKey,
-//         })
-//         .rpc()
+    try{
+        await program_2.methods
+        .revealPoll(poll_result)
+        .accounts({
+            pollAccount: pollInfoPDA,
+            user: wallet_pair.publicKey,
+        })
+        .rpc()
 
-//         poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
-//         expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
-//         expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
-//         expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
-//         expect(Object.keys(poll_info.status) == finished_keys);
-//         expect(poll_info.result == poll_result)
-//     }catch(e) {
-//         const errMsg = "ConstraintRaw";
-//         chai.assert(e["error"]["errorCode"]["code"] == errMsg, e.toString());
-//     }
+        poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
+        expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
+        expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
+        expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
+        expect(Object.keys(poll_info.status) == finished_keys);
+        expect(poll_info.result == poll_result)
+    }catch(e) {
+        const errMsg = "ConstraintRaw";
+        chai.assert(e["error"]["errorCode"]["code"] == errMsg, e.toString());
+    }
 
-//     //// Reveal Poll
-//     await program.methods
-//       .revealPoll(poll_result)
-//       .accounts({
-//         pollAccount: pollInfoPDA,
-//         user: user.publicKey,
-//       })
-//       .rpc()
+    //// Reveal Poll
+    await program.methods
+      .revealPoll(poll_result)
+      .accounts({
+        pollAccount: pollInfoPDA,
+        user: user.publicKey,
+      })
+      .rpc()
 
-//       poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
-//       expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
-//       expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
-//       expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
-//       expect(Object.keys(poll_info.status) == finished_keys);
-//       expect(poll_info.result == poll_result)
+      poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
+      expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
+      expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
+      expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
+      expect(Object.keys(poll_info.status) == finished_keys);
+      expect(poll_info.result == poll_result)
 
-//     //// Reveal Poll Again
-//     try{
-//         await program.methods
-//         .revealPoll(changed_poll_result)
-//         .accounts({
-//             pollAccount: pollInfoPDA,
-//             user: user.publicKey,
-//         })
-//         .rpc()
+    //// Reveal Poll Again
+    try{
+        await program.methods
+        .revealPoll(changed_poll_result)
+        .accounts({
+            pollAccount: pollInfoPDA,
+            user: user.publicKey,
+        })
+        .rpc()
 
-//         poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
-//         expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
-//         expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
-//         expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
-//         expect(Object.keys(poll_info.status) == finished_keys);
-//         expect(poll_info.result == changed_poll_result)
-//     }catch(e) {
-//         const errMsg = "PollAlreadyFinished";
-//         chai.assert(e["error"]["errorCode"]["code"] == errMsg, e.toString());
-//     }
+        poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
+        expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
+        expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
+        expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
+        expect(Object.keys(poll_info.status) == finished_keys);
+        expect(poll_info.result == changed_poll_result)
+    }catch(e) {
+        const errMsg = "PollAlreadyFinished";
+        chai.assert(e["error"]["errorCode"]["code"] == errMsg, e.toString());
+    }
 
-//     //// Cancel Poll By Non-Owner
-//     try{
-//         await program_2.methods
-//         .cancelPoll()
-//         .accounts({
-//             pollAccount: pollInfoPDA,
-//             user: wallet_pair.publicKey,
-//         })
-//         .rpc()
+    //// Cancel Poll By Non-Owner
+    try{
+        await program_2.methods
+        .cancelPoll()
+        .accounts({
+            pollAccount: pollInfoPDA,
+            user: wallet_pair.publicKey,
+        })
+        .rpc()
 
-//         poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
-//         expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
-//         expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
-//         expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
-//         expect(Object.keys(poll_info.status) == cancelled_keys);
-//         expect(poll_info.result == null)
-//     }catch(e) {
-//         const errMsg = "ConstraintRaw";
-//         chai.assert(e["error"]["errorCode"]["code"] == errMsg, e.toString());
-//     }
+        poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
+        expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
+        expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
+        expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
+        expect(Object.keys(poll_info.status) == cancelled_keys);
+        expect(poll_info.result == null)
+    }catch(e) {
+        const errMsg = "ConstraintRaw";
+        chai.assert(e["error"]["errorCode"]["code"] == errMsg, e.toString());
+    }
 
-//     //// Cancel Poll
-//     await program.methods
-//       .cancelPoll()
-//       .accounts({
-//         pollAccount: pollInfoPDA,
-//         user: user.publicKey,
-//       })
-//       .rpc()
+    //// Cancel Poll
+    await program.methods
+      .cancelPoll()
+      .accounts({
+        pollAccount: pollInfoPDA,
+        user: user.publicKey,
+      })
+      .rpc()
 
-//       poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
-//       expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
-//       expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
-//       expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
-//       expect(Object.keys(poll_info.status) == cancelled_keys);
-//       expect(poll_info.result == null)
+      poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
+      expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
+      expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
+      expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
+      expect(Object.keys(poll_info.status) == cancelled_keys);
+      expect(poll_info.result == null)
 
-//     //// Reveal Poll Again
-//     try{
-//         await program.methods
-//         .revealPoll(changed_poll_result)
-//         .accounts({
-//             pollAccount: pollInfoPDA,
-//             user: user.publicKey,
-//         })
-//         .rpc()
+    //// Reveal Poll Again
+    try{
+        await program.methods
+        .revealPoll(changed_poll_result)
+        .accounts({
+            pollAccount: pollInfoPDA,
+            user: user.publicKey,
+        })
+        .rpc()
 
-//         poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
-//         expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
-//         expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
-//         expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
-//         expect(Object.keys(poll_info.status) == finished_keys);
-//         expect(poll_info.result == changed_poll_result)
-//     }catch(e) {
-//         const errMsg = "PollAlreadyCancelled";
-//         chai.assert(e["error"]["errorCode"]["code"] == errMsg, e.toString());
-//     }
+        poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
+        expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
+        expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
+        expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
+        expect(Object.keys(poll_info.status) == finished_keys);
+        expect(poll_info.result == changed_poll_result)
+    }catch(e) {
+        const errMsg = "PollAlreadyCancelled";
+        chai.assert(e["error"]["errorCode"]["code"] == errMsg, e.toString());
+    }
 
-//     //// Cancel Poll Again
-//     try{
-//         await program.methods
-//         .cancelPoll()
-//         .accounts({
-//             pollAccount: pollInfoPDA,
-//             user: user.publicKey,
-//         })
-//         .rpc()
+    //// Cancel Poll Again
+    try{
+        await program.methods
+        .cancelPoll()
+        .accounts({
+            pollAccount: pollInfoPDA,
+            user: user.publicKey,
+        })
+        .rpc()
 
-//         poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
-//         expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
-//         expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
-//         expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
-//         expect(Object.keys(poll_info.status) == finished_keys);
-//         expect(poll_info.result == changed_poll_result)
-//     }catch(e) {
-//         const errMsg = "PollAlreadyCancelled";
-//         chai.assert(e["error"]["errorCode"]["code"] == errMsg, e.toString());
-//     }
-//   })
+        poll_info = await program.account.pollInfo.fetch(pollInfoPDA);
+        expect(poll_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
+        expect(poll_info.votingDeadline).to.equal(timestampPlusTwoDaysAsI32);
+        expect(poll_info.user.toString()).to.equal(user.publicKey.toString());
+        expect(Object.keys(poll_info.status) == finished_keys);
+        expect(poll_info.result == changed_poll_result)
+    }catch(e) {
+        const errMsg = "PollAlreadyCancelled";
+        chai.assert(e["error"]["errorCode"]["code"] == errMsg, e.toString());
+    }
+  })
 
   it("Vote", async () => {
     const pollDataKeypair = anchor.web3.Keypair.generate();
