@@ -518,5 +518,59 @@ describe("w3bber-voting", () => {
       expect(new_vote_info.voterId.toString()).to.equal(user.publicKey.toString());
       expect(new_vote_info.vote.toString()).to.equal(new_ciphertext);
       expect(new_vote_info.tokensStaked).to.equal(new_tokens_staked);
+
+    //// Create Vote with different voter
+    const txHash = await provider.connection.requestAirdrop(
+        wallet_pair.publicKey,
+        1000 * LAMPORTS_PER_SOL
+    );
+
+    const blockhashInfo = await provider.connection.getLatestBlockhash();
+    await provider.connection.confirmTransaction({
+      blockhash: blockhashInfo.blockhash,
+      lastValidBlockHeight: blockhashInfo.lastValidBlockHeight,
+      signature: txHash,
+    });
+
+    const [newVoterInfoPDA, new_voter_bump] = await PublicKey.findProgramAddressSync(
+        [Buffer.from("voter"), wallet_pair.publicKey.toBuffer()],
+        program_2.programId
+    );
+
+    await program_2.methods
+        .createVoter()
+        .accounts({
+            voterAccount: newVoterInfoPDA,
+            user: wallet_pair.publicKey,
+        })
+        .signers([])
+        .rpc()
+
+    let new_voter_info = await program_2.account.voterInfo.fetch(newVoterInfoPDA);
+    expect(new_voter_info.voterId.toString()).to.equal(wallet_pair.publicKey.toString());
+
+    const [newVoteInfoPDA, new_vote_bump] = PublicKey.findProgramAddressSync(
+        [
+            new_voter_info.voterId.toBuffer(),
+            poll_info.pollId.toBuffer()
+        ],
+        program_2.programId
+      )
+
+    await program_2.methods
+      .createVote(ciphertext, tokens_staked)
+      .accounts({
+        voterAccount: newVoterInfoPDA,
+        pollAccount: pollInfoPDA,
+        voteAccount: newVoteInfoPDA,
+        user: wallet_pair.publicKey,
+      })
+      .rpc()
+
+    let new_voter_vote_info = await program_2.account.individualVote.fetch(newVoteInfoPDA);
+    expect(new_voter_vote_info.pollId.toString()).to.equal(random_poll.publicKey.toString());
+    expect(new_voter_vote_info.voterId.toString()).to.equal(wallet_pair.publicKey.toString());
+    expect(new_voter_vote_info.vote.toString()).to.equal(ciphertext);
+    expect(new_voter_vote_info.tokensStaked).to.equal(tokens_staked);
   })
 });

@@ -1,5 +1,3 @@
-# check that a non-owner voter can vote
-
 # check that an other person can not update another voter's vote
 
 # check that voter cannot voter after the poll finishes or is cancelled
