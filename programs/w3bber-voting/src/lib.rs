@@ -4,7 +4,7 @@ use instructions::*;
 pub mod instructions;
 pub mod state;
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("8xgpGQtTaPPppnnf6iDkUP1zzDsqXfdZgoMG7jUSEwov");
 
 #[program]
 pub mod voting {
